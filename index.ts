@@ -1,6 +1,5 @@
 import cron from "node-cron";
 import { createActionLoop } from "./lib/tools/actionLoop";
-import sleep from "./lib/tools/sleep";
 
 const startCronJobs = () => {
   // Run every 5 minutes
@@ -18,7 +17,6 @@ const init = async () => {
   // Start polling loop
   while (true) {
     await createActionLoop();
-    // await sleep();
   }
 };
 

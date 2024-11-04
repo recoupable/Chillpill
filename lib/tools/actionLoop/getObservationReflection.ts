@@ -1,7 +1,6 @@
 import { OPEN_AI_MODEL } from "@/lib/consts";
 import { openai } from "@/lib/openai/client";
 import { whoIsFelizViernes } from "@/lib/openai/instructions";
-import type { EventType } from "@/lib/stack";
 import { getEventsForToday } from "@/lib/stack/getEventsForToday";
 
 export const getObservationReflection = async (
