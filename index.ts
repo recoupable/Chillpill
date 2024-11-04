@@ -1,15 +1,15 @@
 import cron from "node-cron";
-import sleep from "./lib/tools/sleep";
+// import sleep from "./lib/tools/sleep";
 
 const startCronJobs = () => {
   // Run every 5 minutes
   cron.schedule("*/1 * * * *", async () => {
-    console.log("Running 1-minute post cron job");
+    console.log("Running 1-minute cron job - I am thinking");
   });
 };
 
 const init = async () => {
-  console.log("Starting Farcaster Cast Poller");
+  console.log("Starting Recoup Agent");
 
   // Start cron jobs
   startCronJobs();
