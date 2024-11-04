@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "feliz-viernes",
+      name: "recoup-agent",
       script: "bun",
       args: "start",
       cron_restart: "0 */12 * * *",
