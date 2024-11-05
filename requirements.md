@@ -135,9 +135,9 @@ Stack L3 serves as the persistence layer for Recoupable Agent's digital consciou
 
 #### 3.4.2 Event Types
 
-- `create_email`: Tracks sent emails (1 point)
+- `send_email`: Tracks sent emails (1 point)
   - Metadata: email content, timestamp, recipient, subject
-- `create_slack_message`: Tracks Slack messages (1 point)
+- `send_slack_message`: Tracks Slack messages (1 point)
   - Metadata: message content, timestamp, channelName, channelId
 
 #### 3.4.3 Technical Implementation
@@ -149,7 +149,7 @@ const stack = new StackClient({
 });
 
 // Email event tracking
-await stack.track("create_email", {
+await stack.track("send_email", {
   points: 1,
   account: REC_AGENT_ADDRESS,
   metadata: {
@@ -160,7 +160,7 @@ await stack.track("create_email", {
 });
 
 // Slack message event tracking
-await stack.track("create_slack_message", {
+await stack.track("send_slack_message", {
   points: 1,
   account: REC_AGENT_ADDRESS,
   metadata: {

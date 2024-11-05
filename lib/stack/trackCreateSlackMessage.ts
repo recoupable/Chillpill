@@ -6,7 +6,7 @@ export async function trackCreateSlackMessage(
   channelId: string,
   timestamp: string
 ) {
-  await trackEvent("create_slack_message", FELIZ_VIERNES_ADDRESS, {
+  await trackEvent("send_slack_message", FELIZ_VIERNES_ADDRESS, {
     content,
     channelId,
     timestamp,

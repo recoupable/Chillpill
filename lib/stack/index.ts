@@ -6,7 +6,7 @@ export interface EventMetadata {
   subject?: string;
 }
 
-export type EventType = "send_email" | "create_slack_message";
+export type EventType = "send_email" | "send_slack_message";
 
 export default {
   trackEvent,
