@@ -6,11 +6,7 @@ export async function executeTask(task: TaskGeneration) {
 
   switch (task.action) {
     case "send_email":
-      await sendEmail({
-        to: "sweetmantech@gmail.com",
-        subject: "No Subject",
-        html: "<div>Hello World</div>",
-      });
+      await sendEmail(task);
       break;
     default:
       throw new Error(`Unknown action type: ${task.action}`);

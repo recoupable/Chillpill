@@ -1,42 +1,71 @@
+import { OpenAI } from "openai";
 import stack from "@/lib/stack";
 import { trackCreateEmail } from "@/lib/stack/trackCreateEmail";
 import { Resend } from "resend";
+import type { TaskGeneration } from "../actionLoop/generateTask";
+import { whoIsFelizViernes } from "@/lib/openai/instructions";
+import { OPEN_AI_MODEL } from "@/lib/consts";
 
 if (!process.env.RESEND_API_KEY) {
   throw new Error("RESEND_API_KEY environment variable is not set");
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-export interface EmailConfig {
-  to: string;
-  subject: string;
-  html: string;
-  from?: string;
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error("OPENAI_API_KEY environment variable is not set");
 }
 
-export async function sendEmail(config: EmailConfig) {
-  try {
-    const emailConfig = {
-      from: config.from || "recoup@onchainmagic.xyz",
-      to: config.to,
-      subject: config.subject,
-      html: config.html,
-    };
-    console.log("Sending email:", emailConfig);
-    // const response = await resend.emails.send(emailConfig);
+const resend = new Resend(process.env.RESEND_API_KEY);
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-    const { data, error } = await resend.emails.send({
-      from: "Recoup <agent@myco.wtf>",
+async function generateEmailContent(task: TaskGeneration) {
+  const prompt = `
+    Generate a professional email based on the following task:
+    Task ID: ${task.taskId}
+    Task Type: ${task.task}
+    Task Reasoning: ${task.taskReasoning}
+    
+    Please provide the response in JSON format with 'subject' and 'html' fields.
+    The HTML should be well-formatted and include proper styling.
+  `;
+
+  const completion = await openai.chat.completions.create({
+    messages: [
+      { role: "system", content: whoIsFelizViernes },
+      { role: "user", content: prompt },
+    ],
+    model: OPEN_AI_MODEL,
+    response_format: { type: "json_object" },
+  });
+
+  console.log("completion:", completion);
+
+  const response = JSON.parse(completion.choices[0].message.content);
+  return {
+    subject: response.subject,
+    html: response.html,
+  };
+}
+
+export async function sendEmail(task: TaskGeneration) {
+  try {
+    // Generate email content using OpenAI
+    const emailContent = await generateEmailContent(task);
+
+    const emailConfig = {
+      from: "Recoup <agent@recoupable.com>",
       to: ["sweetmantech@gmail.com", "sidney@recoupable.com"],
-      subject: "Hello World",
-      html: "<strong>It works!</strong>",
-    });
-    console.log(" email data:", data);
-    console.log("error:", error);
+      subject: emailContent.subject,
+      html: emailContent.html,
+    };
+
+    const { data } = await resend.emails.send(emailConfig);
 
     // Track the email event using Stack L3
-    await trackCreateEmail(config.html, config.subject, config.to);
+    await trackCreateEmail(
+      emailConfig.html,
+      emailConfig.subject,
+      emailConfig.to[0]
+    );
 
     return data;
   } catch (error) {
