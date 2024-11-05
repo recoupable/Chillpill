@@ -1,6 +1,7 @@
 import { openai } from "../../openai/client";
 import { OPEN_AI_MODEL } from "../../consts";
 import type { ActionType } from "./types";
+import { whoIsReneeCoupable } from "@/lib/openai/instructions";
 
 export interface TaskGeneration {
   taskId: string;
@@ -20,7 +21,7 @@ export async function generateTask(
     messages: [
       {
         role: "system",
-        content: `You are a Musician, analyzing your low level plan to determine the next specific task to perform.
+        content: `${whoIsReneeCoupable}, analyzing your low level plan to determine the next specific task to perform.
           Available actions: ${availableActions.join(", ")}`,
       },
       {

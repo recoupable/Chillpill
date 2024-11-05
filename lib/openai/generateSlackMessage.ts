@@ -12,11 +12,10 @@ export async function generateSlackMessage(task: TaskGeneration) {
       },
       {
         role: "user",
-        content: `Format a Slack message for the following task:
-            Task ID: ${task.taskId}
+        content: `Write a Slack message for the following task:
             Task: ${task.task}
             Reasoning: ${task.taskReasoning}
-            Goal: Create authentic music and grow a cult-like following`,
+            Goal: Create authentic music and grow your cult-like following`,
       },
     ],
     model: OPEN_AI_MODEL,
