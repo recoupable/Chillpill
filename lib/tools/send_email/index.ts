@@ -3,7 +3,7 @@ import stack from "@/lib/stack";
 import { trackCreateEmail } from "@/lib/stack/trackCreateEmail";
 import { Resend } from "resend";
 import type { TaskGeneration } from "../actionLoop/generateTask";
-import { whoIsFelizViernes } from "@/lib/openai/instructions";
+import { whoIsReneeCoupable } from "@/lib/openai/instructions";
 import { OPEN_AI_MODEL } from "@/lib/consts";
 
 if (!process.env.RESEND_API_KEY) {
@@ -30,7 +30,7 @@ async function generateEmailContent(task: TaskGeneration) {
 
   const completion = await openai.chat.completions.create({
     messages: [
-      { role: "system", content: whoIsFelizViernes },
+      { role: "system", content: whoIsReneeCoupable },
       { role: "user", content: prompt },
     ],
     model: OPEN_AI_MODEL,
