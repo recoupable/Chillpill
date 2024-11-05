@@ -1,15 +1,12 @@
-import { WebClient } from "@slack/web-api";
 import type { TaskGeneration } from "../actionLoop/generateTask";
 import { trackCreateSlackMessage } from "@/lib/stack/trackCreateSlackMessage";
-
-if (!process.env.SLACK_BOT_TOKEN || !process.env.SLACK_CHANNEL_ID) {
-  throw new Error("Slack environment variables are missing.");
-}
-
-const slack = new WebClient(process.env.SLACK_BOT_TOKEN);
+import { generateSlackMessage } from "@/lib/openai/generateSlackMessage";
+import { slack } from "@/lib/slack/client";
 
 export async function sendSlackMessage(task: TaskGeneration) {
   try {
+    const generatedMessage = await generateSlackMessage(task);
+
     const slackConfig = {
       channel: process.env.SLACK_CHANNEL_ID || "",
       text: task.task,
@@ -18,7 +15,7 @@ export async function sendSlackMessage(task: TaskGeneration) {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `*Task ID:* ${task.taskId}\n*Task:* ${task.task}\n*Reasoning:* ${task.taskReasoning}`,
+            text: generatedMessage,
           },
         },
       ],
