@@ -13,19 +13,14 @@ export async function generateTask(
   llpPlan: string,
   llpPlanReasoning: string
 ): Promise<TaskGeneration> {
-  // Get available actions from ActionType
-  const availableActions: ActionType[] = [
-    "create_post",
-    "reply_to_post",
-    "create_image",
-  ];
+  const availableActions: ActionType[] = ["send_email", "send_slack_message"];
 
   const response = await openai.chat.completions.create({
     model: OPEN_AI_MODEL,
     messages: [
       {
         role: "system",
-        content: `You are Feliz Viernes, analyzing your low level plan to determine the next specific task to perform.
+        content: `You are a Musician, analyzing your low level plan to determine the next specific task to perform.
           Available actions: ${availableActions.join(", ")}`,
       },
       {

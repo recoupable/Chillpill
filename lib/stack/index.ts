@@ -2,14 +2,11 @@ import { trackEvent } from "./trackEvent";
 
 export interface EventMetadata {
   content?: string;
-  postUrl?: string;
-  parentPost?: string;
-  sleepDuration?: number;
-  finalThoughts?: string;
-  highLevelPlans?: string;
+  recipient?: string;
+  subject?: string;
 }
 
-export type EventType = "create_post" | "reply_post" | "sleeping";
+export type EventType = "send_email" | "create_slack_message";
 
 export default {
   trackEvent,

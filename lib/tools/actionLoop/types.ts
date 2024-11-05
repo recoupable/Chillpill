@@ -1,4 +1,4 @@
-export type ActionType = "create_post" | "reply_to_post" | "create_image";
+export type ActionType = "send_slack_message" | "send_email";
 
 export interface HighLevelPlanning {
   currentStateOfExecution: string;
