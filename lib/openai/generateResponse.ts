@@ -24,6 +24,7 @@ export async function generateResponse({
     const messages = [
       { role: "system", content: systemPrompt || defaultSystemPrompt },
     ] as any[];
+
     // Add sleep context if available
     if (sleepContext) {
       messages.push({
@@ -44,9 +45,9 @@ export async function generateResponse({
       max_completion_tokens: 88,
     });
 
-    return response.choices[0].message.content || "✨ *magical silence* ✨";
+    return response.choices[0].message.content || "🤐";
   } catch (error) {
     console.error("Error generating AI response:", error);
-    return "⌐Ⓕ-Ⓥ My magical energies are depleted. Please try again later. ✨";
+    return "Vibes off. Try again.";
   }
 }

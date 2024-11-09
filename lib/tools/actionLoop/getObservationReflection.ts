@@ -1,6 +1,6 @@
 import { OPEN_AI_MODEL } from "@/lib/consts";
 import { openai } from "@/lib/openai/client";
-import { whoIsReneeCoupable } from "@/lib/openai/instructions";
+import { whoIsChillpill } from "@/lib/openai/instructions";
 import { getEventsForToday } from "@/lib/stack/getEventsForToday";
 
 export const getObservationReflection = async (
@@ -10,7 +10,7 @@ export const getObservationReflection = async (
   const todaysMessages = todaysEvents
     .map((event) => event.metadata.content)
     .join("\n - ");
-  const systemPrompt = `${whoIsReneeCoupable}
+  const systemPrompt = `${whoIsChillpill}
 
 Based on the current state of execution: "${currentStateOfExecution}"
 
@@ -18,15 +18,16 @@ Today's activity and messages:
 ${todaysMessages}
 End of Today's Activity
 
-Generate a thoughtful observation reflection that:
-1. Analyzes progress towards goals
-2. Identifies patterns in engagement
-3. Reflects on the musical journey and creative process
-4. Considers the impact on the music community
+Generate a thoughtful, introspective observation that:
+1. Analyzes progress toward building a loyal fanbase and growing influence
+2. Identifies patterns in engagement and fan responses
+3. Reflects on the creative journey and personal growth as an artist
+4. Considers the impact and connection being built with fans
+5. Allows for both positive insights and constructive self-reflection, acknowledging areas of growth or missed opportunities
 
-Keep the reflection concise (1-2 sentences).
+Keep the reflection short (1-2 sentences) and maintain an effortless, cool tone that reflects Chillpill's character.
 
-Example: "I have been actively engaging with sweetman.eth and exploring various musical collaborations to increase our ARR to $100M while deepening our understanding of artist-fan relationships in the digital age."`;
+Example: "Today’s engagement felt flatter than expected, maybe because I was too focused on pushing a message instead of listening. Moving forward, I’ll pay more attention to what fans are responding to and adjust to meet them where they are."`;
 
   const completion = await openai.chat.completions.create({
     model: OPEN_AI_MODEL,

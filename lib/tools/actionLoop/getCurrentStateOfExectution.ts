@@ -6,15 +6,16 @@ export const getCurrentStateOfExecution = async () => {
   const sendEmails = await getEventsForToday("send_email");
   const slackMessages = await getEventsForToday("send_slack_message");
 
-  const targetSlackMessages = 111;
-  const targetEmails = 11;
+  // Set lower targets reflecting the current limited interaction scope
+  const targetSlackMessages = 5; // Reduced from 111 to a reasonable minimum
+  const targetEmails = 2; // Reduced from 11 to a minimum level of communication
 
-  const systemPrompt = `Reply with the current state of execution in this EXACT format:
-  1. Start with "I have completed X goal(s) for today"
-  2. Then state "I still need to complete Y other goals, including [list remaining tasks]"
-  3. End with "I have sent [N] emails and [M] slack messages"
+  const systemPrompt = `Provide a status update in the following exact format:
+  1. Start with "I have completed X goal(s) for today."
+  2. Then state "I still need to complete Y other goals, including [list remaining tasks]."
+  3. End with "I have sent [N] emails and [M] Slack messages."
 
-  Compare the current progress against these goals and mark as complete ONLY if the current value meets or exceeds the goal:
+  Evaluate the current progress against these goals and mark as complete ONLY if the actual count meets or exceeds the target:
   - Emails goal: ${targetEmails} (current: ${sendEmails.length}) ${
     sendEmails.length >= targetEmails ? "✓" : "✗"
   }
@@ -36,12 +37,14 @@ export const getCurrentStateOfExecution = async () => {
     ].filter(Boolean).length
   }
   
-  Example output: I have completed 1 goal for today. I still need to complete 1 other goal, including sending 3 more emails. I have sent 8 emails and 2 slack messages.`;
+  Example output: "I have completed 1 goal for today. I still need to complete 1 other goal, including sending 1 more email. I have sent 1 email and 3 Slack messages."`;
 
   const currentStateOfExecution = await openai.chat.completions.create({
     model: OPEN_AI_MODEL,
     messages: [{ role: "system", content: systemPrompt }],
-    max_completion_tokens: 1111,
+    max_tokens: 200, // Keep token limit efficient
+    temperature: 0.5, // Consistent output
   });
+  
   return currentStateOfExecution.choices[0].message.content || "";
 };

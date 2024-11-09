@@ -1,4 +1,4 @@
-import { FELIZ_VIERNES_ADDRESS } from "../consts";
+import { CHILLPILL_ADDRESS } from "../consts";
 import { trackEvent } from "./trackEvent";
 
 export async function trackCreateSlackMessage(
@@ -6,7 +6,7 @@ export async function trackCreateSlackMessage(
   channelId: string,
   timestamp: string
 ) {
-  await trackEvent("send_slack_message", FELIZ_VIERNES_ADDRESS, {
+  await trackEvent("send_slack_message", CHILLPILL_ADDRESS, {
     content,
     channelId,
     timestamp,

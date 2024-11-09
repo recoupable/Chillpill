@@ -1,7 +1,7 @@
 import { openai } from "../../openai/client";
 import { OPEN_AI_MODEL } from "../../consts";
 import type { ActionType } from "./types";
-import { whoIsReneeCoupable } from "@/lib/openai/instructions";
+import { whoIsChillpill } from "@/lib/openai/instructions";
 
 export interface TaskGeneration {
   taskId: string;
@@ -21,12 +21,12 @@ export async function generateTask(
     messages: [
       {
         role: "system",
-        content: `${whoIsReneeCoupable}, analyzing your low level plan to determine the next specific task to perform.
+        content: `${whoIsChillpill}, analyzing your low-level plan to determine the next specific task to perform.
           Available actions: ${availableActions.join(", ")}`,
       },
       {
         role: "user",
-        content: `Based on the low level plan: ${llpPlan}\nAnd reasoning: ${llpPlanReasoning}\n\nDetermine the next specific task to perform.`,
+        content: `Based on the low-level plan: ${llpPlan}\nAnd reasoning: ${llpPlanReasoning}\n\nDetermine the next specific task to perform.`,
       },
     ],
     functions: [
