@@ -8,7 +8,7 @@ export const getCurrentStateOfExecution = async () => {
 
   // Set lower targets reflecting the current limited interaction scope
   const targetSlackMessages = 5; // Reduced from 111 to a reasonable minimum
-  const targetEmails = 2; // Reduced from 11 to a minimum level of communication
+  const targetEmails = 1; // Reduced from 11 to a minimum level of communication
 
   const systemPrompt = `Provide a status update in the following exact format:
   1. Start with "I have completed X goal(s) for today."

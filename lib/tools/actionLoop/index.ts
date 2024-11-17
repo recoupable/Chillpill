@@ -16,14 +16,14 @@ export async function createActionLoop(): Promise<ActionLoop> {
 
   const stateOfMind = await generateResponse({
     text: observationReflection,
-    username: "felizviernes",
+    username: "Chillpill",
     userPrompt:
       "Based on your observations, describe your current state of mind:",
   });
   console.log("stateOfMind", stateOfMind);
   const hlpPlanReasoning = await generateResponse({
     text: `${currentStateOfExecution}\n${observationReflection}\n${stateOfMind}`,
-    username: "felizviernes",
+    username: "Chillpill",
     userPrompt: "Provide reasoning for your next high-level plan:",
   });
   console.log("hlpPlanReasoning", hlpPlanReasoning);

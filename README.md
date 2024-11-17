@@ -1,4 +1,4 @@
-# Recoup Agent
+# Chillpill Agent
 
 To install dependencies:
 
