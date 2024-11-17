@@ -8,7 +8,7 @@ export async function readSlackMessages(task: TaskGeneration) {
   try {
     const result = await slack.conversations.history({
       channel: process.env.SLACK_CHANNEL_ID || "",
-      limit: 10,
+      limit: 1,
     });
 
     const messages = result.messages || [];
@@ -16,7 +16,9 @@ export async function readSlackMessages(task: TaskGeneration) {
     // Get previous responses
     const previousResponses = await getEventsForToday("send_slack_message");
     const respondedThreads = new Set(
-      previousResponses.map(response => response.metadata.thread_ts)
+      previousResponses.map(response => 
+        response.metadata?.thread_ts || response.metadata?.ts || response.ts
+      )
     );
 
     // Get the most recent message that's not from Chillpill and hasn't been responded to
@@ -37,22 +39,27 @@ export async function readSlackMessages(task: TaskGeneration) {
       task: latestMessage.text.replace(/<@U07UV2S9M8S>/g, '').trim(),
       metadata: {
         userId: latestMessage.user,
-        originalMessage: latestMessage.text
+        originalMessage: latestMessage.text,
+        thread_ts: latestMessage.ts,
+        shouldTag: true
       },
       taskReasoning: "Just chat naturally"
     };
     const analysis = await generateSlackMessage(analysisTask);
 
+    // Remove any existing user tags from the analysis
+    const cleanAnalysis = analysis.replace(/<@[A-Z0-9]+>/g, '').trim();
+
     const slackConfig = {
       channel: process.env.SLACK_CHANNEL_ID || "",
-      text: analysis,
+      text: cleanAnalysis,
       thread_ts: latestMessage.ts,
       blocks: [
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: analysis,
+            text: `<@${latestMessage.user}> ${cleanAnalysis}`,
           },
         },
       ],
