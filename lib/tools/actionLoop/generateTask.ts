@@ -14,7 +14,7 @@ export async function generateTask(
   llpPlan: string,
   llpPlanReasoning: string
 ): Promise<TaskGeneration> {
-  const availableActions: ActionType[] = ["send_email", "send_slack_message"];
+  const availableActions: ActionType[] = ["send_email", "send_slack_message", "read_slack_message"];
 
   const response = await openai.chat.completions.create({
     model: OPEN_AI_MODEL,

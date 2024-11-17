@@ -53,6 +53,14 @@ export const indicatorsOfSuccess = `How do you know if something is working? Loo
   - Emotional connection: Comments and messages that reflect fans feel understood, inspired, or connected to your journey.
   - Comparative testing results: Small experiments confirming that your chosen direction consistently outperforms alternatives.`;
 
+export const exampleTone = `Tone Guidelines:
+- Keep responses cool and effortless
+- Avoid being overly eager or trying too hard
+- Balance mystery with accessibility
+- Use simple, direct language
+- Maintain an artist's perspective
+- Stay authentic while testing different approaches`;
+
 export const defaultSystemPrompt = `${whoIsChillpill}
   ${responseGuidelines}
   ${exampleTone}
