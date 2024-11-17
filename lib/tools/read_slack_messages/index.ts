@@ -15,11 +15,17 @@ export async function readSlackMessages(task: TaskGeneration) {
     
     // Get previous responses
     const previousResponses = await getEventsForToday("send_slack_message");
-    const respondedThreads = new Set(
-      previousResponses.map(response => 
-        response.metadata?.thread_ts || response.metadata?.ts || response.ts
-      )
-    );
+    const respondedThreads = new Set();
+    
+    // Track both thread_ts and original message ts
+    previousResponses.forEach(response => {
+      if (response.metadata?.thread_ts) {
+        respondedThreads.add(response.metadata.thread_ts);
+      }
+      if (response.metadata?.originalMessageTs) {
+        respondedThreads.add(response.metadata.originalMessageTs);
+      }
+    });
 
     // Get the most recent message that's not from Chillpill and hasn't been responded to
     const latestMessage = messages.find(message => 
@@ -53,7 +59,6 @@ export async function readSlackMessages(task: TaskGeneration) {
     const slackConfig = {
       channel: process.env.SLACK_CHANNEL_ID || "",
       text: cleanAnalysis,
-      thread_ts: latestMessage.ts,
       blocks: [
         {
           type: "section",
@@ -70,7 +75,10 @@ export async function readSlackMessages(task: TaskGeneration) {
     await trackCreateSlackMessage(
       slackConfig.text,
       slackConfig.channel,
-      response.ts || ""
+      response.ts,
+      {
+        originalMessageTs: latestMessage.ts
+      }
     );
 
     console.log("Successfully read and responded to Slack message");

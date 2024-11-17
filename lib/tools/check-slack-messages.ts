@@ -1,6 +1,11 @@
 import { readSlackMessages } from "./read_slack_messages";
 import type { TaskGeneration } from "./actionLoop/generateTask";
 
+// Initialize message checking on import
+startMessageChecking().catch(error => {
+  console.error('Failed to start message checking:', error);
+});
+
 export async function checkSlackMessages() {
   // Basic task for direct message responses
   const mentionTask: TaskGeneration = {
