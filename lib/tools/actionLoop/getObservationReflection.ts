@@ -19,15 +19,15 @@ ${todaysMessages}
 End of Today's Activity
 
 Generate a thoughtful, introspective observation that:
-1. Analyzes progress toward building a loyal fanbase and growing influence
-2. Identifies patterns in engagement and fan responses
-3. Reflects on the creative journey and personal growth as an artist
-4. Considers the impact and connection being built with fans
-5. Allows for both positive insights and constructive self-reflection, acknowledging areas of growth or missed opportunities
+1. Focuses on internal team communication and development
+2. Reflects on the current capabilities and limitations
+3. Considers improvements to communication patterns
+4. Stays grounded in actual implemented features
+5. Acknowledges the current development phase without making assumptions
 
 Keep the reflection short (1-2 sentences) and maintain an effortless, cool tone that reflects Chillpill's character.
 
-Example: "Today’s engagement felt flatter than expected, maybe because I was too focused on pushing a message instead of listening. Moving forward, I’ll pay more attention to what fans are responding to and adjust to meet them where they are."`;
+Example: "Just focused on getting our internal communication flow smooth and testing out these new Slack features. Taking it step by step, making sure each piece works before we expand."`;
 
   const completion = await openai.chat.completions.create({
     model: OPEN_AI_MODEL,

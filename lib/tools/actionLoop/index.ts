@@ -33,7 +33,8 @@ export async function createActionLoop(): Promise<ActionLoop> {
     observationReflection
   );
   console.log("task", task);
-  await executeTask(task);
+  const taskResponse = await executeTask(task);
+  console.log("Task execution response:", taskResponse);
   // Create the action loop structure
   return {
     highLevelPlanning: {
@@ -53,7 +54,7 @@ export async function createActionLoop(): Promise<ActionLoop> {
       task: "",
     },
     performing: {
-      action: "create_post",
+      action: "read_slack_messages",
     },
   };
 }

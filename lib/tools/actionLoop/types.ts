@@ -1,4 +1,4 @@
-export type ActionType = "send_slack_message" | "send_email" | "read_slack_message";
+export type ActionType = "send_slack_message" | "send_email" | "read_slack_messages";
 
 export interface HighLevelPlanning {
   currentStateOfExecution: string;
@@ -61,6 +61,6 @@ export const EXAMPLE_ACTION_LOOP: ActionLoop = {
     task: "Set up and test the read_slack_message feature to analyze team conversations",
   },
   performing: {
-    action: "read_slack_message",
+    action: "read_slack_messages",
   },
 };

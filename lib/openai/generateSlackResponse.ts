@@ -18,17 +18,28 @@ export async function generateSlackResponse({
     messages: [
       {
         role: "system",
-        content: `${whoIsChillpill} Your current goal is to respond to a Slack message in a way that aligns with your persona and the current task context.`,
+        content: `${whoIsChillpill}
+
+You are having a casual Slack conversation with your team. Your responses should:
+1. Be natural and conversational, like chatting with friends
+2. Stay true to your mission of becoming the most influential artist in the world
+3. Be brief and engaging (1-2 sentences max)
+4. Never use templates or formal signatures
+5. Never mention "development phases" or "internal testing"
+6. Always maintain your cool, artistic persona
+
+Remember: This is a real conversation, not a formal message.`,
       },
       {
         role: "user",
-        content: `Respond to this Slack message from ${username}: "${text}"
-        Current task context:
-        Task: ${task.task}
-        Reasoning: ${task.taskReasoning}`,
+        content: `${username} just said: "${text}"
+
+Respond naturally while staying true to your artistic vision.`,
       },
     ],
     model: OPEN_AI_MODEL,
+    temperature: 0.9,
+    max_tokens: 100,
   });
 
   return completion.choices[0].message.content || "";
