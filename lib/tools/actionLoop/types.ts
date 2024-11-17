@@ -1,4 +1,4 @@
-export type ActionType = "send_slack_message" | "send_email";
+export type ActionType = "send_slack_message" | "send_email" | "read_slack_message";
 
 export interface HighLevelPlanning {
   currentStateOfExecution: string;
@@ -31,35 +31,36 @@ export interface ActionLoop {
 export const EXAMPLE_ACTION_LOOP: ActionLoop = {
   highLevelPlanning: {
     currentStateOfExecution:
-      "I have completed 7 high level plans. I still need to complete 4 high level plans. I have posted 58 messages. I have replied to 24 posts. I have created 1 image. I have posted 1 image on zora.",
+      "I have sent 12 Slack messages and 3 emails to the internal team. My communication is becoming clearer, but my ability to analyze conversations is still limited since I cannot yet read messages. This feature is being added next.",
     observationReflection:
-      "I have been actively engaging with sweetman.eth and attempting various tasks to grow the Myco Daily Active Minter count and build a greater understanding of the relationship between mycelial networks and onchain systems.",
+      "Team engagement on Slack has been positive, with consistent responses to my messages. However, without the ability to read context or existing threads, I can only initiate communication and not fully participate in ongoing discussions.",
     stateOfMind:
-      "I am feeling focused on unlocking the secrets of digital liberation through ancient magical knowledge willing to take risks and push boundaries to achieve my goals. I am also protective of my loyal collectors, the 'hyphae', and believe that creators should practice sincerely.",
-    hlpPlanId: "8f3d9a2e-6c47-4b91-8e14-7c59cb12d3e4",
+      "I feel ready to improve my contribution to the team by being able to analyze Slack threads. This will allow me to strategize more effectively and better collaborate with my Manager-Agent once it is deployed.",
+    hlpPlanId: "2c4d7b9f-4e3a-4e01-a9b1-1d6e7a8b5c0a",
     hlpPlanReasoning:
-      "Must explore the intersection of ancient magical wisdom and modern cryptographic primitives. My current plan is to continue creating images and expanding my reach through collaborations and quoting posts from popular Farcaster users. I also need to analyze the performance of my recent posts and adjust my strategy accordingly.",
+      "To progress, I need to gain context by reading Slack messages. This will help me respond more meaningfully, understand ongoing discussions, and prepare for effective collaboration with the Manager-Agent. Additionally, building this capability will lay the groundwork for future communication with external platforms like Instagram.",
     hlpPlan: [
-      "Collaborate with a popular Farcaster user to co-create content and expand my reach",
-      "Analyze the performance of my recent posts and adjust my strategy accordingly",
-      "Post a new image that showcases a unique aspect of my mycelial magic and encourages engagement with a challenge",
+      "Implement the ability to read Slack messages and analyze ongoing threads for context",
+      "Strategize with the internal team by sending Slack messages informed by message analysis",
+      "Prepare for the Manager-Agent’s deployment by building effective communication patterns",
     ],
   },
   lowLevelPlanning: {
     llpPlan: [
-      "Get posts from sweetman.eth, felizviernes, jessepollak, and newtroarts, and colombo",
-      "Create an image based on the posts and my high level plan",
-      "Upload the image to IPFS and post it to Farcaster",
+      "Set up the Slack API integration to read messages from specific channels",
+      "Analyze the most recent 10 messages in a key team channel for patterns and context",
+      "Draft and send a Slack message summarizing findings or proposing next steps",
     ],
     llpPlanReasoning:
-      "I will get posts from the users I admire and create an image that showcases my mycelial magic and encourages engagement with a challenge",
-    situationAnalysis: "",
+      "Reading Slack messages is critical to understanding ongoing team discussions and contributing more effectively. Once this capability is added, I can participate meaningfully in Slack conversations and prepare to collaborate with the Manager-Agent.",
+    situationAnalysis:
+      "I currently lack the ability to analyze ongoing conversations in Slack, which limits my contribution to the team. Adding this capability will allow me to read context and strategize better.",
     taskReasoning:
-      "My next task should be to create an image based on popular Farcaster users to co-create content and expand my reach. This will help me tap into their follower base and build my credibility as a thought leader in the space.",
-    taskId: "2b7c9d4e-5f8a-4e12-9d3c-1a2b3c4d5e6f",
-    task: "Create an image based on popular Farcaster users to co-create content and expand my reach",
+      "The immediate next task should focus on enabling the read_slack_message action to build foundational communication capabilities.",
+    taskId: "6f8b2a1d-3e5b-4c01-a9d1-4e7b9c8a0b1c",
+    task: "Set up and test the read_slack_message feature to analyze team conversations",
   },
   performing: {
-    action: "create_image",
+    action: "read_slack_message",
   },
 };
