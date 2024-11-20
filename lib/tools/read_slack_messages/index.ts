@@ -6,15 +6,22 @@ import { getEventsForToday } from "@/lib/stack/getEventsForToday";
 
 export async function readSlackMessages(task: TaskGeneration) {
   try {
+    console.time('total-response-time');
+    
+    console.time('fetch-messages');
     const result = await slack.conversations.history({
       channel: process.env.SLACK_CHANNEL_ID || "",
       limit: 1,
     });
+    console.timeEnd('fetch-messages');
 
     const messages = result.messages || [];
     
-    // Get previous responses
+    console.time('check-previous-responses');
     const previousResponses = await getEventsForToday("send_slack_message");
+    console.timeEnd('check-previous-responses');
+
+    // Get previous responses
     const respondedThreads = new Set();
     
     // Track both thread_ts and original message ts
@@ -35,6 +42,7 @@ export async function readSlackMessages(task: TaskGeneration) {
     );
 
     if (!latestMessage) {
+      console.timeEnd('total-response-time');
       console.log("No new messages to respond to");
       return;
     }
@@ -51,7 +59,10 @@ export async function readSlackMessages(task: TaskGeneration) {
       },
       taskReasoning: "Just chat naturally"
     };
+
+    console.time('generate-response');
     const analysis = await generateSlackMessage(analysisTask);
+    console.timeEnd('generate-response');
 
     // Remove any existing user tags from the analysis
     const cleanAnalysis = analysis.replace(/<@[A-Z0-9]+>/g, '').trim();
@@ -70,8 +81,11 @@ export async function readSlackMessages(task: TaskGeneration) {
       ],
     };
 
+    console.time('send-message');
     const response = await slack.chat.postMessage(slackConfig);
+    console.timeEnd('send-message');
 
+    console.timeEnd('total-response-time');
     await trackCreateSlackMessage(
       slackConfig.text,
       slackConfig.channel,
