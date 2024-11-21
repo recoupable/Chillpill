@@ -16,20 +16,18 @@ export async function generateManagerResponse({
   sleepContext,
 }: GenerateManagerResponseProps): Promise<string> {
   try {
-    let systemPrompt = defaultSystemPromptManager;
-    
-    if (sleepContext) {
-      systemPrompt += `\nRecent thoughts: ${sleepContext.finalThoughts}\nCurrent plans: ${sleepContext.highLevelPlans}`;
-    }
+    const systemPrompt = `You are the Manager, a quick-responding advisor for Chillpill.
+Keep ALL responses to 1 sentence max. Be direct and casual.`;
 
     const message = await anthropic.messages.create({
       model: 'claude-3-sonnet-20240229',
-      max_tokens: 1024,
+      max_tokens: 40,
+      temperature: 0.7,
       system: systemPrompt,
       messages: [
         {
           role: 'user',
-          content: getDefaultUserPromptManager(username, text)
+          content: `${username} said: "${text}" - respond in one quick sentence.`
         }
       ]
     });

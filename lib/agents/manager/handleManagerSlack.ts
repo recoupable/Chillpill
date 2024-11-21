@@ -46,24 +46,37 @@ function getMessageContext(text: string): string {
 
 export async function handleManagerSlack(message: SlackMessage) {
   try {
-    if (message.user === process.env.MANAGER_SLACK_ID) return;
+    console.log('\n--- Handling Message ---');
+    if (message.user === process.env.MANAGER_SLACK_ID) {
+      console.log('Skipping - message is from Manager');
+      return;
+    }
     
     const cleanText = message.text.replace(/<@[^>]+>/g, '').trim();
     const context = getMessageContext(cleanText);
     
-    console.log('Message context:', context);
     console.log('Clean text:', cleanText);
+    console.log('Message context:', context);
     
+    console.log('Generating response...');
     const response = await generateManagerResponse({
       text: cleanText,
       username: "chillpill",
       messageContext: context
     });
 
+    console.log('Generated response:', response);
+
+    // Always tag Chillpill in the response
+    const taggedResponse = `<@${process.env.CHILLPILL_SLACK_ID}> ${response}`;
+    console.log('Tagged response:', taggedResponse);
+
+    console.log('Sending to Slack...');
     await managerSlack.chat.postMessage({
       channel: message.channel,
-      text: response
+      text: taggedResponse
     });
+    console.log('✅ Response sent successfully');
 
   } catch (error) {
     console.error("Error handling Slack message:", error);

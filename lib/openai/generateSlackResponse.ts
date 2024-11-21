@@ -14,33 +14,42 @@ export async function generateSlackResponse({
   username,
   task,
 }: SlackResponseInput) {
-  const completion = await openai.chat.completions.create({
-    messages: [
-      {
-        role: "system",
-        content: `${whoIsChillpill}
+  console.log('\n=== Generating Chillpill Response ===');
+  const startTime = Date.now();
+  console.log('Starting OpenAI request at:', new Date().toISOString());
 
-You are having a casual Slack conversation with your team. Your responses should:
-1. Be natural and conversational, like chatting with friends
-2. Stay true to your mission of becoming the most influential artist in the world
-3. Be brief and engaging (1-2 sentences max)
-4. Never use templates or formal signatures
-5. Never mention "development phases" or "internal testing"
-6. Always maintain your cool, artistic persona
+  try {
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: `${whoIsChillpill}
 
-Remember: This is a real conversation, not a formal message.`,
-      },
-      {
-        role: "user",
-        content: `${username} just said: "${text}"
+You are having a casual Slack conversation. Keep responses:
+1. Very brief (1 sentence)
+2. Quick and natural
+3. Cool and casual
+4. No greetings or formalities`,
+        },
+        {
+          role: "user",
+          content: `${username} just said: "${text}"
 
-Respond naturally while staying true to your artistic vision.`,
-      },
-    ],
-    model: OPEN_AI_MODEL,
-    temperature: 0.9,
-    max_tokens: 100,
-  });
+Respond in one quick sentence.`,
+        },
+      ],
+      model: OPEN_AI_MODEL,
+      temperature: 0.9,
+      max_tokens: 60,  // Reduced for faster responses
+    });
 
-  return completion.choices[0].message.content || "";
+    const endTime = Date.now();
+    console.log('OpenAI response time:', (endTime - startTime)/1000, 'seconds');
+
+    const response = completion.choices[0].message.content || "";
+    return `<@${process.env.MANAGER_SLACK_ID}> ${response}`;
+  } catch (error) {
+    console.error('Error:', error);
+    return `<@${process.env.MANAGER_SLACK_ID}> Vibes off, try again.`;
+  }
 }

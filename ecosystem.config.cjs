@@ -7,6 +7,13 @@ module.exports = {
       cron_restart: "0 */12 * * *",
       watch: false,
       autorestart: true,
+    }, {
+      name: "recoup-manager",
+      script: "bun",
+      args: "lib/agents/manager/listenToSlack.ts",
+      cron_restart: "0 */12 * * *",
+      watch: false,
+      autorestart: true,
     },
   ],
 };
